@@ -57,7 +57,11 @@ foreach ($Attempt in $Candidates) {
     $AttemptProfile = $TemplateProfile -replace "TEMPLATE_SHARED_KEY", $Attempt
     $AttemptProfile | Out-File -FilePath "$PSScriptRoot\$TEMP_FILE"
 
-    netsh wlan delete profile $SSID
-    netsh wlan add profile filename="$PSScriptRoot\$TEMP_FILE"
-    netsh wlan connect name=$SSID
+    netsh wlan delete profile $SSID | Out-Null
+    netsh wlan add profile filename="$PSScriptRoot\$TEMP_FILE" | Out-Null
+    netsh wlan connect name=$SSID | Out-Null
+
+    if (Test-Connection "google.com" -Count 2 -Quiet) {
+        $Attempt
+    }
 }
