@@ -20,7 +20,7 @@
     Purpose/Change: Initial script development
   
 .EXAMPLE
-    PS> .\Invoke-OnlineAttack.ps1 -Wordlist "rockyou.txt"
+    PS> .\Invoke-OnlineAttack.ps1 -SSID CoolWiFi -Wordlist "rockyou.txt"
 #>
 
 param
