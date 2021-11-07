@@ -1,4 +1,6 @@
 #!/bin/bash
+# online_attack.sh: WPA2-PSK online attack sciript
+# Performs an online dictionary on a given WPA2-PSK Wi-Fi network.
 
 # Validate command line arguments
 if [[ $# -ne 3 ]]; then
