@@ -20,7 +20,7 @@
     Purpose/Change: Initial script development
   
 .EXAMPLE
-    .\Invoke-OnlineAttack -Wordlist "rockyou.txt"
+    PS> .\Invoke-OnlineAttack.ps1 -Wordlist "rockyou.txt"
 #>
 
 param
